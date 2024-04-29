@@ -1,0 +1,15 @@
+/*Generate Button: Styles for the generate button*/
+.generateButton{
+    display: block;
+    background: whitesmoke;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: black;
+    font-size: 15px;
+    text-decoration: none; /*Remove test decoration*/
+}
+
+/*Generate Button: Styles for the generate button on hover*/
+.generateButton::hover{
+    background: gainsboro;
+    text-decoration: none;
+}
