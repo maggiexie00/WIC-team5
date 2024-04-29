@@ -1,11 +1,22 @@
+
+h1{
+    text-align: center;
+    font-family:courier;
+}
 /*Generate Button: Styles for the generate button*/
 .generateButton{
     display: block;
+    margin: 20px;
     background: whitesmoke;
     font-family: Georgia, 'Times New Roman', Times, serif;
     color: black;
     font-size: 15px;
+    padding: 19px;;
     text-decoration: none; /*Remove test decoration*/
+    width: 65pt;
+    -webkit-border-radius: 28; /*Set border radius for WebKit browsers*/
+    -moz-border-radius: 28;/*Set border radius for Mozilla browsers*/
+    border-radius: 20px;/*Set border radius for other browsers*/
 }
 
 /*Generate Button: Styles for the generate button on hover*/
