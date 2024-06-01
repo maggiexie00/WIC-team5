@@ -31,22 +31,68 @@ ul {
     padding: 0;
     overflow: hidden;
     background-color: #333;
-  }
-  
-  li {
+}
+li {
     float: left;
     border-right:1px solid #bbb;
-  }
+}
   
-  li a {
+li a {
     display: block;
     color: white;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
-  }
+}
   
-  /* Change the link color to #111 (black) on hover */
-  li a:hover {
+/* Change the link color to #111 (black) on hover */
+li a:hover {
     background-color: #111;
-  }
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+    margin: 0;
+}
+
+#chat-container {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    height: 600px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+}
+
+#chat-box {
+    flex-grow: 1;
+    padding: 10px;
+    overflow-y: auto;
+    border-bottom: 1px solid #ccc;
+}
+
+#user-input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: none;
+    outline: none;
+}
+
+#send-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    outline: none;
+}
+
+#send-button:hover {
+    background-color: #0056b3;
+}
