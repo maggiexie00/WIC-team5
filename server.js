@@ -7,7 +7,7 @@ require('dotenv').config();
 const app = express();
 const port = 3000;
 
-const SPOONACULAR_API_KEY = process.env.SPOONACULAR_API_KEY;
+const SPOONACULAR_API_KEY = 00769ec18f914af8beefa3b804401b46;
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
