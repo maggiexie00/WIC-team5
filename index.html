@@ -1,6 +1,16 @@
-{% extends 'control/base.html' %}
-{% load static %}
-{% block style %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>InSight Labs: Microscopy Web Application</title>
+    <!-- Bootstrap framework -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/new_design/css/dashboard.4838576dabcf.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    
 <style>
     #playVideo {
         background: transparent;
@@ -94,29 +104,68 @@
         margin-left: -1em;
     }
 </style>
-{% endblock %}
-{% block sidebar %}
-{% include "control/sidelinks.html" with active="Dashboard" %}
-{% endblock %}
-{% block main %}
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-3 col-lg-2 d-md-flex flex-column justify-content-between sidebar collapse">
+                <div class="p-3 d-flex justify-content-between">
+                    <span class="heading text-center">
+                        <a href="/"><img src="/static/new_design/images/logo_white.6d77e1d7d279.png" alt="" width="55%"></a>
+                        
+                    </span>
+                </div>
+                <div class="p-1">
+                    
+
+<ul class="nav flex-column mb-2">
+    <li class="nav-item active">
+        <a href="/" class="nav-link"><i class="bi bi-person-fill"></i>&nbsp;&nbsp; Dashboard</a>
+    </li>
+    <li class="nav-item ">
+        <a href="/plates/" class="nav-link"><i class="bi bi-dice-6"></i>&nbsp;&nbsp; Vessel View</a>
+    </li>
+    <li class="nav-item ">
+        <a href="/result" class="nav-link"><i class="bi bi-person-lines-fill"></i>&nbsp;&nbsp; Result</a>
+    </li>
+</ul>
+
+                </div>
+                <div class="bg-dark p-3 mx-2 mb-5 text-center account">
+                    <div class="mb-3">
+                        <a href="/profile">
+                            <img class="avatar" src="/static/new_design/images/avatar5.9726ef88bd05.png" alt="" width="80px">
+                        </a>
+                        
+                        <p>Shuhan</p>
+                    </div>
+                    <a href="/logout/"><button class="logout">Logout</button></a>
+
+                </div>
+
+
+
+            </nav>
+            <main class="col-md-9 ms-auto col-lg-10 p-3">
+                
 <div class="row px-2">
-    <h4>Welcome to iLABS {{user.first_name|capfirst}} {{user.last_name|capfirst}}</h4>
+    <h4>Welcome to iLABS  </h4>
 </div>
-{% for message in messages%}
-<div class="alert alert-success" role="alert">
-    {{message}}
-</div> {% endfor%}
+
 
 <div class="row p-1">
     <div class="col-md-3 mb-md-1 mb-4">
         <div class="card p-3 h-100">
-            <h3><img src="{% static 'new_design/images/icon-03-black.png' %}" width="33px" alt=""> Vessels</h3>
+            <h3><img src="/static/new_design/images/icon-03-black.eb819faa199e.png" width="33px" alt=""> Vessels</h3>
             <p>List of plates</p>
             <hr>
             <ul class="ps-4">
-                {% for plate in plates%}
-                <li><a href="{% url 'plate_detail' plate_id=plate.id%}">{{plate.name}}</a></li>
-                {% endfor %}
+                
+                <li><a href="/plate_detail/12/">TEST1</a></li>
+                
             </ul>
         </div>
     </div>
@@ -151,7 +200,7 @@
     </div>
     <div class="col-md-3 mb-md-1 mb-4">
         <div class="card  p-4 h-100">
-            <h3><img src="{% static 'new_design/images/cellmedia.png' %}" width="35px" alt=""> Cell
+            <h3><img src="/static/new_design/images/cellmedia.1fc48fe55f92.png" width="35px" alt=""> Cell
                 Media </h3>
             <p>Media used in experiment</p>
             <hr>
@@ -180,7 +229,7 @@
             <div class="card  p-3 h-100" style="position: relative;">
                 <span class="text-center fw-bold">Live Cell Imaging for A549 2.2</span>
                 <video width="100%" id="myVideo">
-                    <source src="{% static 'new_design/video/well1.webm'%}" type="video/webm">
+                    <source src="/static/new_design/video/well1.76f4e001354e.webm" type="video/webm">
                     Your browser does not support the video tag.
                 </video>
                 <div id="playVideo"><span type="button" onclick="playVid()">&#9654;</span></div>
@@ -198,7 +247,7 @@
 
     </div>
     <div class="col-md-3 mb-2">
-        <a href="{% url 'add_plate'%}">
+        <a href="/add_plate/">
             <div class="card p-3 h-100">
                 <div class="card-body d-flex justify-content-center pt-5 pb-5">
                     <svg version="1.1" id="Layer_1" x="0px" y="0px" height="145px" viewBox="0 0 122.881 122.88"
@@ -241,8 +290,15 @@
 
     </div>
 </div> -->
-{% endblock %}
-{% block scripts %}
+
+
+            </main>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+    
 <script>
     var data = {
         labels: [
@@ -251,7 +307,7 @@
             "Cell viability"
         ],
         datasets: [{
-            data: [{% for c in cc %}{{ c.1}}, {% endfor %}],
+            data: [],
     backgroundColor: [
         "#0A4E98",
         "#84A25D",
@@ -304,7 +360,7 @@
                 ctx.font = fontSize + "em sans-serif";
                 ctx.textBaseline = "middle";
 
-                var text = "{{assay_count}} Tests",
+                var text = "0 Tests",
                     textX = Math.round((width - ctx.measureText(text).width) / 2),
                     textY = height / 2;
 
@@ -504,4 +560,7 @@
     }
 
 </script>
-{% endblock %}
+
+</body>
+
+</html>
