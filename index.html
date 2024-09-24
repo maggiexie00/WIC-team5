@@ -577,33 +577,13 @@
     });
 
     
-// Checkbox event listeners
-document.getElementById('checkbox1').addEventListener('change', function() {
-    mychart.data.datasets[0].hidden = !this.checked; // Toggle visibility for A1
-    mychart.update();
-});
-document.getElementById('checkbox2').addEventListener('change', function() {
-    mychart.data.datasets[1].hidden = !this.checked; // Toggle visibility for A2
-    mychart.update();
-});
-// Add similar event listeners for the remaining checkboxes...
-
-document.getElementById('checkbox3').addEventListener('change', function() {
-    mychart.data.datasets[2].hidden = !this.checked; // Toggle visibility for A3
-    mychart.update();
-});
-document.getElementById('checkbox4').addEventListener('change', function() {
-    mychart.data.datasets[3].hidden = !this.checked; // Toggle visibility for B1
-    mychart.update();
-});
-document.getElementById('checkbox5').addEventListener('change', function() {
-    mychart.data.datasets[4].hidden = !this.checked; // Toggle visibility for B2
-    mychart.update();
-});
-document.getElementById('checkbox6').addEventListener('change', function() {
-    mychart.data.datasets[5].hidden = !this.checked; // Toggle visibility for B3
-    mychart.update();
-});
+        // Add event listeners to the checkboxes
+    document.querySelectorAll('.checkbox-container input[type="checkbox"]').forEach((checkbox, index) => {
+        checkbox.addEventListener('change', function() {
+            myChart.data.datasets[index].hidden = !this.checked; // Toggle visibility based on checkbox
+            myChart.update(); // Update the chart
+        });
+    });
     
     var vid = document.getElementById("myVideo");
 
