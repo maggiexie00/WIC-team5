@@ -1,0 +1,19 @@
+{% load static %}
+<ul class="nav flex-column mb-2">
+    {% if user.is_superuser %}
+    <li class="nav-item">
+        <a href="{% url 'admin:index'%}" class="nav-link"><i class="bi bi-person-fill-gear"></i>&nbsp;&nbsp; Admin</a>
+    </li>
+        
+    
+    {%endif%}
+    <li class="nav-item {% if active == 'Dashboard'%}active{%endif%}">
+        <a href="/" class="nav-link"><i class="bi bi-person-fill"></i>&nbsp;&nbsp; Dashboard</a>
+    </li>
+    <li class="nav-item {% if active == 'Plates'%}active{%endif%}">
+        <a href="{% url 'plates' %}" class="nav-link"><i class="bi bi-dice-6"></i>&nbsp;&nbsp; Projects</a>
+    </li>
+    <li class="nav-item {% if active == 'Result'%}active{%endif%}">
+        <a href="{% url 'result' %}" class="nav-link"><i class="bi bi-person-lines-fill"></i>&nbsp;&nbsp; Result</a>
+    </li>
+</ul>
