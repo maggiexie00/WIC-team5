@@ -23,32 +23,32 @@
                 </div>
                 {% endif %}
                 
-                <form method="post" enctype="multipart/form-data">
+                <form method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
                     {% csrf_token %}
                     
                     <div class="form-group mb-3">
-                        <label for="id_dataset_name"><strong>Training Dataset Name</strong></label>
-                        {{ form.dataset_name|as_crispy_field }}
+                        <label for="id_dataset_name"><strong>Alpha Numeric</strong></label>
+                        <input type="text" class="form-control" id="id_dataset_name" name="dataset_name" placeholder="Enter alpha numeric value">
                     </div>
 
                     <div class="form-group mb-3">
                         <label for="id_organ"><strong>Organ</strong></label>
-                        {{ form.organ|as_crispy_field }}
+                        <input type="text" class="form-control" id="id_organ" name="organ" placeholder="Enter organ">
                     </div>
 
                     <div class="form-group mb-3">
                         <label for="id_specie"><strong>Specie</strong></label>
-                        {{ form.specie|as_crispy_field }}
+                        <input type="text" class="form-control" id="id_specie" name="specie" placeholder="Enter specie">
                     </div>
 
                     <div class="form-group mb-3">
                         <label for="id_adherent_or_suspension"><strong>Adherent or Suspension</strong></label>
-                        {{ form.adherent_or_suspension|as_crispy_field }}
+                        <input type="text" class="form-control" id="id_adherent_or_suspension" name="adherent_or_suspension" placeholder="Enter adherent or suspension">
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="id_training_images"><strong>Upload Training Images</strong></label>
-                        {{ form.training_images|as_crispy_field }}
+                        <label for="id_training_images"><strong>Choose File</strong></label>
+                        <input type="file" class="form-control" id="id_training_images" name="training_images" multiple accept="image/*">
                         <small class="form-text text-muted">Upload at least 10 training frames.</small>
                     </div>
                     
@@ -58,4 +58,26 @@
         </div>
     </div>
 </div>
+
+<script>
+    function validateForm() {
+        const trainingImages = document.getElementById('id_training_images');
+        const files = trainingImages.files;
+        
+        if (files.length < 10) {
+            alert("You need at least 10 images for training");
+            return false;
+        }
+
+        for (let i = 0; i < files.length; i++) {
+            if (!files[i].type.startsWith('image/')) {
+                alert("All files must be images");
+                return false;
+            }
+        }
+
+        return true;
+    }
+</script>
 {% endblock %}
+
