@@ -1,0 +1,61 @@
+{% extends 'control/base.html' %}
+{% load static %}
+
+{% block main %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-8">
+            <div class="card p-4 shadow">
+                <h3 class="mb-4">Submit Training Data</h3>
+                
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                    <ul>
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="form-group mb-3">
+                        <label for="id_dataset_name"><strong>Training Dataset Name</strong></label>
+                        {{ form.dataset_name|as_crispy_field }}
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="id_organ"><strong>Organ</strong></label>
+                        {{ form.organ|as_crispy_field }}
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="id_specie"><strong>Specie</strong></label>
+                        {{ form.specie|as_crispy_field }}
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="id_adherent_or_suspension"><strong>Adherent or Suspension</strong></label>
+                        {{ form.adherent_or_suspension|as_crispy_field }}
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="id_training_images"><strong>Upload Training Images</strong></label>
+                        {{ form.training_images|as_crispy_field }}
+                        <small class="form-text text-muted">Upload at least 10 training frames.</small>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
