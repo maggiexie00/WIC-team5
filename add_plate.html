@@ -407,27 +407,19 @@
                         <input type="number" min="1" class="form-control" id="passage" name="passage" value="4" required>
                     </div> -->
 					<!-- Training Data Submission Form (Hidden by Default) -->
-				<div id="training_form" style="display:none; margin-top: 20px;">
-    				<h4>Submit Training Data</h4>
-    
-    				<div class="form-group row mb-3">
-        				<label for="training_name" class="col-sm-3 col-form-label"><strong>Training Dataset Name</strong></label>
-        				<div class="col-sm">
-            				<input type="text" class="form-control" id="training_name" name="training_name"
-                   					placeholder="AlphaNumeric_Organ_Specie_Adherent/Suspension" required>
-        				</div>
-    				</div>
-
-    				<div class="form-group row mb-3">
-        				<label for="training_images" class="col-sm-3 col-form-label"><strong>Upload Training Images</strong></label>
-        				<div class="col-sm">
-            				<input type="file" class="form-control" id="training_images" name="training_images" accept="image/*" 
-                   					multiple required onchange="validateImages()">
-            				<small class="form-text text-muted">Upload at least 10 training frames.</small>
-        				</div>
-    				</div>
+                <div class="form-group row mb-3">
+                    <label for="cell_line" class="col-sm-3 col-form-label"><strong>Cell Line</strong></label>
+                    <div class="col-sm">
+                        <select id="cell_line" name="cell_line" class="form-control" onchange="toggleTrainingForm()">
+                            <option value='A549 Lung cancer, human, adherent' data-src="{% static 'new_design/images/A54p.png'%}">A549 Lung cancer, human, adherent</option>
+                            <option value='K562 Leukemia, human, suspension' data-src="{% static 'new_design/images/K562.png'%}">K562 Leukemia, human, suspension</option>
+                            <option value='iBSC1 Female bovine, adherent' data-src="{% static 'new_design/images/iBSC1.png'%}">iBSC1 Female bovine, adherent</option>
+                            <option value='Generalist Model' data-src="{% static 'new_design/images/A54p.png'%}">Generalist Model</option>
+                        </select>
+                        <small id="generalistMessage" class="form-text text-muted" style="display: none;">If you want to train your own model, please use this button +</small>
+                        <button type="button" id="addTrainingDataButton" class="btn btn-secondary mt-3" style="display: none;" onclick="window.location.href='{% url 'submit_training_data' %}'">Add Training Data</button>
+                    </div>
                 </div>
-
                 <!-- <div class="form-group row mb-3">
                     <label for="treatments" class="col-sm-3 col-form-label"><strong>Notes</strong></label>
                     <div class="col-sm">
@@ -1550,24 +1542,17 @@
     });
  </script>
 <script>
-    // Function to show/hide training form based on the selected cell line
     function toggleTrainingForm() {
-        const cellLineSelect = document.getElementById('cell_line');
-        const trainingForm = document.getElementById('training_form');
+        const cellLine = document.getElementById('cell_line').value;
+        const generalistMessage = document.getElementById('generalistMessage');
+        const addTrainingDataButton = document.getElementById('addTrainingDataButton');
 
-        if (cellLineSelect.value === 'Generalist Model') {
-            trainingForm.style.display = 'block';
+        if (cellLine === 'Generalist Model') {
+            generalistMessage.style.display = 'block';
+            addTrainingDataButton.style.display = 'block';
         } else {
-            trainingForm.style.display = 'none';
-        }
-    }
-
-    // Function to validate the number of uploaded images
-    function validateImages() {
-        const fileInput = document.getElementById('training_images');
-        if (fileInput.files.length < 10) {
-            alert("You need at least 10 images for training.");
-            fileInput.value = ""; // Clear the file input
+            generalistMessage.style.display = 'none';
+            addTrainingDataButton.style.display = 'none';
         }
     }
 </script>
