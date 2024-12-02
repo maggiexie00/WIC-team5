@@ -1,32 +1,213 @@
 {% extends 'control/base.html' %}
+{% load custom_tags %}
 {% load static %}
-
 {% block style %}
 <style>
-    .form-control {
+    .select2-selection__rendered {
         border: 1px solid;
         border-radius: 0.375rem;
         padding: 5px;
         border-color: #dadee3;
     }
 
-    .form-text {
-        font-size: 0.875em;
-        color: #6c757d;
+    .select2-container--default {
+        .select2-selection--single {
+            border-color: #c62828;
+            height: 60px;
+            padding: 7.5px 0;
+            border-radius: .375rem;
+
+            .select2-selection__arrow {
+                height: 58px;
+            }
+        }
     }
 
-    .btn-primary {
-        background-color: #c62828;
-        border-color: #c62828;
+    .select2-dropdown {
+        border-radius: 0;
+        box-shadow: #444 0px 3px 5px;
+        border: 0;
     }
 
-    .btn-primary:hover {
-        background-color: #b71c1c;
-        border-color: #b71c1c;
+    .disabled {
+        background-color: #ffe4e4;
+    }
+
+    .options {
+        text-align: center;
+        background: rgba(148, 212, 228, 0.4);
+        border: 1px solid #989898;
+        box-sizing: border-box;
+        border-radius: 18px;
+        padding: 15px;
+    }
+
+    .labl {
+        display: block;
+    }
+
+    .labl>input {
+        /* HIDE RADIO */
+        visibility: hidden;
+        /* Makes input not-clickable */
+        position: absolute;
+        /* Remove input from document flow */
+    }
+
+    .labl>input+div {
+        cursor: pointer;
+        border: 2px solid transparent;
+    }
+
+    .labl>input:checked+div {
+        background-color: #ffd6bb;
+        border: 1px solid #ff6600;
+    }
+
+    .location {
+        display: block;
+    }
+
+    .location>input {
+        visibility: hidden;
+        /* Makes input not-clickable */
+        position: absolute;
+    }
+
+    .location>input:checked+div {
+        background-color: #ffd6bb;
+        border: 1px solid #ff6600;
+
+    }
+
+    .dot {
+        height: 25px;
+        width: 25px;
+        background-color: none;
+        border: 1px solid #94d4e4;
+        border-radius: 40%;
+        display: inline-block;
+    }
+
+    .plates {
+        padding-bottom: 10px;
+    }
+
+    .cell_culture_img {
+        height: 100px;
+    }
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    input:checked+.slider {
+        background-color: #2196F3;
+    }
+
+    input:focus+.slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked+.slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 34px;
+    }
+
+    .slider.round:before {
+        border-radius: 50%;
+    }
+
+    .custom-file::-webkit-file-upload-button {
+        visibility: hidden;
+    }
+
+    .custom-file::before {
+        content: 'Select file';
+        display: inline-block;
+        background: linear-gradient(top, #f9f9f9, #e3e3e3);
+        border: 1px solid #999;
+        border-radius: 3px;
+        padding: 5px 8px;
+        outline: none;
+        white-space: nowrap;
+        -webkit-user-select: none;
+        cursor: pointer;
+        text-shadow: 1px 1px #fff;
+        font-weight: 700;
+        font-size: 10pt;
+    }
+
+    .custom-file:hover::before {
+        border-color: black;
+    }
+
+    .custom-file:active::before {
+        background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+    }
+
+    .select2-container--default {
+        .select2-selection--single {
+            border-color: #fff;
+            height: 60px;
+            padding: 7.5px 0;
+            border-radius: 0;
+
+            .select2-selection__arrow {
+                height: 58px;
+            }
+        }
+    }
+
+    .select2-dropdown {
+        border-radius: 0;
+        box-shadow: #444 0px 3px 5px;
+        border: 0;
     }
 </style>
 {% endblock %}
-
+{% block sidebar %}
+{% include "control/sidelinks.html" with active="Projects" %}
+{% endblock %}
 {% block main %}
 <div class="row p-2">
     <div class="col">
@@ -85,6 +266,8 @@
     </div>
 </div>
 
+{% endblock %}
+{% block scripts %}
 <script>
     async function submitForm(event) {
         event.preventDefault();
