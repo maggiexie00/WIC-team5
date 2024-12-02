@@ -1,44 +1,34 @@
-
-
-<!doctype html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>InSight Labs: Microscopy Web Application</title>
-    <!-- Bootstrap framework -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <link rel="stylesheet" href="/static/new_design/css/dashboard.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-    
+{% extends 'control/base.html' %}
+{% load static %}
+{% block style %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1-rc.1/css/select2.min.css">
 <style>
-    .select2-selection__rendered{
+    .select2-selection__rendered {
         border: 1px solid;
-  border-radius: 0.375rem;
-  padding: 5px;
-  border-color: #dadee3;
+        border-radius: 0.375rem;
+        padding: 5px;
+        border-color: #dadee3;
     }
+
     .select2-container--default {
-         .select2-selection--single {
+        .select2-selection--single {
             border-color: #c62828;
             height: 60px;
             padding: 7.5px 0;
             border-radius: .375rem;
 
             .select2-selection__arrow {
-               height: 58px;
+                height: 58px;
             }
-         }
-      }
+        }
+    }
 
-      .select2-dropdown {
-         border-radius: 0;
-         box-shadow: #444 0px 3px 5px;
-         border: 0;
-      }
+    .select2-dropdown {
+        border-radius: 0;
+        box-shadow: #444 0px 3px 5px;
+        border: 0;
+    }
+
     .disabled {
         background-color: #ffe4e4;
     }
@@ -195,97 +185,49 @@
         background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
     }
 
-.select2-container--default {
-  .select2-selection--single {
-	  border-color: #fff;
-    height: 60px;
-    padding: 7.5px 0;
-    border-radius: 0;
-    .select2-selection__arrow {
-      height: 58px;
+    .select2-container--default {
+        .select2-selection--single {
+            border-color: #fff;
+            height: 60px;
+            padding: 7.5px 0;
+            border-radius: 0;
+
+            .select2-selection__arrow {
+                height: 58px;
+            }
+        }
     }
-  }
-}
 
-.select2-dropdown {
-  border-radius: 0;
-  box-shadow: #444 0px 3px 5px;
-  border: 0;
-}
-
+    .select2-dropdown {
+        border-radius: 0;
+        box-shadow: #444 0px 3px 5px;
+        border: 0;
+    }
 </style>
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-
-<body>
-    <div class="container-fluid">
-        <div class="row">
-            <nav class="col-md-3 col-lg-2 d-md-flex flex-column justify-content-between sidebar collapse">
-                <div class="p-3 d-flex justify-content-between">
-                    <span class="heading text-center">
-                        <a href="/"><img src="/static/new_design/images/logo_white.png" alt="" width="55%"></a>
-                        
-                    </span>
-                </div>
-                <div class="p-1">
-                    
-
-<ul class="nav flex-column mb-2">
-    
-    <li class="nav-item ">
-        <a href="/" class="nav-link"><i class="bi bi-person-fill"></i>&nbsp;&nbsp; Dashboard</a>
-    </li>
-    <li class="nav-item ">
-        <a href="/plates/" class="nav-link"><i class="bi bi-dice-6"></i>&nbsp;&nbsp; Projects</a>
-    </li>
-    <li class="nav-item ">
-        <a href="/result" class="nav-link"><i class="bi bi-person-lines-fill"></i>&nbsp;&nbsp; Result</a>
-    </li>
-</ul>
-
-
-                </div>
-                <div class="bg-dark p-3 mx-2 mb-5 text-center account">
-                    <div class="mb-3">
-                        <a href="/profile">
-                            <img class="avatar" src="/static/new_design/images/avatar5.png" alt="" width="80px">
-                        </a>
-                        
-                        <p>Shuhan</p>
-                    </div>
-                    <a href="/logout/"><button class="logout">Logout</button></a>
-
-                </div>
-
-
-
-            </nav>
-            <main class="col-md-9 ms-auto col-lg-10 p-3">
-                
+{% endblock %}
+{% block sidebar %}
+{% include "control/sidelinks.html" with active="Projects" %}
+{% endblock %}
+{% block main %}
 <div class="row p-2">
     <div class="col">
-        <h3>Vessel</h3>
+        <h3>Project</h3>
     </div>
-    <!-- <div class="col d-flex justify-content-end">
-        <div>
-            <img src="/static/new_design/images/microscope_250.png" alt="" width="22px">
-            <strong>Image Source: Keyence BZ-X series</strong>
-        </div>
-    </div> -->
 </div>
-
+{% for message in messages%}
+<div class="alert alert-success" role="alert">{{message}}</div>
+{% endfor%}
 <div class="container">
     <div class="row d-flex justify-content-center">
         <div class="col-9 card p-5 shadow">
-            <h3 class="mb-5">Add new Vessel</h3>
-            
+            <h3 class="mb-5">Add new Project</h3>
+
             <form action="" method="POST" id="culture_form">
-                <input type="hidden" name="csrfmiddlewaretoken" value="tkWtAOddMrIqSRNrfo5ZYDA7Q9v7G69CvjCAJ32wfStvLiDk8S507lw0I84fk5hT">
+                {% csrf_token %}
                 <div class="form-group row mb-3">
-                    <label for="name" class="col-sm-3 col-form-label"><strong>Vessel name</strong></label>
+                    <label for="name" class="col-sm-3 col-form-label"><strong>Project name</strong></label>
                     <div class="col-sm">
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Vessel name"
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Project name"
                             required>
                     </div>
                 </div>
@@ -293,14 +235,13 @@
                 <div class="form-group row mb-3">
                     <label for="description" class="col-sm-3 col-form-label"><strong>Purpose</strong></label>
                     <div class="col-sm">
-                        <textarea class="form-control" id="description" name="description" cols="30" rows="4" placeholder="Purpose" required></textarea>
-                        <!-- <input type="text" class="form-control" id="description" name="description"
-                            placeholder="Purpose" required> -->
+                        <textarea class="form-control" id="description" name="description" cols="30" rows="4"
+                            placeholder="Purpose" required></textarea>
                     </div>
                 </div>
                 <div class="row">
                     <legend class="col-form-label col-sm-3 float-sm-left pt-0">
-                        <p class="fw-bold">Choose size:</p>
+                        <p class="fw-bold">Choose Vessel Size</p>
                     </legend>
                     <div class="col-sm-9">
                         <br>
@@ -311,8 +252,7 @@
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="size" id="value_12" value="12"
-                                checked>
+                            <input class="form-check-input" type="radio" name="size" id="value_12" value="12" checked>
                             <label class="form-check-label h6" for="value_12">
                                 12
                             </label>
@@ -337,64 +277,47 @@
                         </div>
                     </div>
                 </div>
-                
-                <!-- <div class="form-group row mb-3">
-                    <label for="description" class="col-sm-3 col-form-label"><strong>Plate</strong></label>
-                    <div class="col-sm">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="plate_type" id="inlineRadio1"
-                                value="newplate">
-                            <label class="form-check-label" for="inlineRadio1">New plate</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="plate_type" id="inlineRadio2"
-                                value="existing">
-                            <label class="form-check-label" for="inlineRadio2">Choose existing</label>
-                        </div>
-                    </div>
-
-
-                </div> -->
-                <div id="plate_type_div">
-                    <!-- <input type="hidden" name="invitro" value="">
-                    <div class="form-group row mb-3">
-                        <label for="description" class="col-sm-3 col-form-label"><strong>Select plate</strong></label>
-                        <div class="col-sm">
-                            <select class="form-select" id="existing_plate_select" name="existing_plate_select" onchange="getplatedata(this)">
-                                <option selected>--</option>
-                                
-                            </select>
-                        </div>
-                    </div>
-                    <div id="existing_grid"></div> -->
-
-                    <!-- <fieldset class="form-group row">
-                        
-                    </fieldset>
-                    <div class="row d-flex">
-                        <p class="fw-bold" id="location">Choose Location: </p>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-10" id="test"></div>
-                    </div> -->
-                </div>
-
-                <br><br>
-
-
-
                 <div class="form-group row mb-3">
                     <label for="cell_line" class="col-sm-3 col-form-label"><strong>Cell Line</strong></label>
                     <div class="col-sm">
                         <select id="cell_line" name="cell_line" class="form-control" onchange="toggleTrainingForm()">
-                            <option value='A549 Lung cancer, human, adherent' data-src="{% static 'new_design/images/A54p.png'%}">A549 Lung cancer, human, adherent</option>
-                            <option value='K562 Leukemia, human, suspension' data-src="{% static 'new_design/images/K562.png'%}">K562 Leukemia, human, suspension</option>
-                            <option value='iBSC1 Female bovine, adherent' data-src="{% static 'new_design/images/iBSC1.png'%}">iBSC1 Female bovine, adherent</option>
-                            <option value='Generalist Model' data-src="{% static 'new_design/images/A54p.png'%}">Generalist Model</option>
+                            <option value='A549 Lung cancer, human, adherent'
+                                data-src="{% static 'new_design/images/A54p.png'%}">A549 Lung cancer, human, adherent
+                            </option>
+                            <option value='K562 Leukemia, human, suspension'
+                                data-src="{% static 'new_design/images/K562.png'%}">K562 Leukemia, human, suspension
+                            </option>
+                            <option value='iBSC1 Female bovine, adherent'
+                                data-src="{% static 'new_design/images/iBSC1.png'%}">iBSC1 Female bovine, adherent
+                            </option>
+                            <option value='Generalist Model' data-src="{% static 'new_design/images/A54p.png'%}">
+                                Generalist Model
+                            </option>
                         </select>
                         <small id="generalistMessage" class="form-text text-muted" style="display: none;">If you want to train your own model, please use this button </small>
-                        <div><a href={% url 'submit_training_data' id=''%}><button type="button" id="addTrainingDataButton" class="btn btn-secondary mt-3" style="display: none;">Add Training Data</button></a></div>
+                        <button type="button" id="addTrainingDataButton" class="btn btn-secondary mt-3" style="display: none;" onclick="window.location.href='{% url 'submit_training_data' %}'">Add Training Data</button>
+                    </div>
+                </div>
+                <div id="training_form" style="display: none; margin-top: 20px;">
+                    <h4>Submit Training Data</h4>
+
+                    <div class="form-group row mb-3">
+                        <label for="training_dataset_name" class="col-sm-3 col-form-label">
+                            <strong>Training Dataset Name</strong></label>
+                        <div class="col-sm">
+                            <input type="text" class="form-control" id="training_dataset_name"
+                                name="training_dataset_name" placeholder="AlphaNumeric_Organ_Specie_Adherent/Suspension">
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-3">
+                        <label for="training_images" class="col-sm-3 col-form-label"><strong>Upload Training
+                                Images</strong></label>
+                        <div class="col-sm">
+                            <input type="file" class="form-control" id="training_images" name="training_images"
+                                accept="image/*" multiple onchange="validateImages()">
+                            <small class="form-text text-muted">Upload at least 10 training frames.</small>
+                        </div>
                     </div>
                 </div>
 
@@ -434,7 +357,7 @@
                               </div>
                     </div>
                 </div> -->
-                  
+
 
                 <!-- <div class="form-group row mb-3">
                     <label for="cell_media" class="col-sm-3 col-form-label"><strong>Cell Media</strong></label>
@@ -455,26 +378,26 @@
                     </div>
                 </div> -->
                 <div class="form-group row mb-3">
-                    <label for="microscope" class="col-sm-3 col-form-label"><strong>Image Source</strong></label>
+                    <label for="microscope" class="col-sm-3 col-form-label"><strong>Microscope</strong></label>
                     <div class="col-sm">
-                        <select name="microscope" id="microscope" class="form-select" onchange="toggleMicroscopeInput()">
+                        <select name="microscope" id="microscope" class="form-select"
+                            onchange="toggleMicroscopeInput()">
                             <option value="Keyence BZ-X series">Keyence BZ-X series</option>
                             <option value="Axion Biosystem">Axion Biosystem</option>
-							<option value="other">Other</option>
+                            <option value="other">Other</option>
                         </select>
                         <!-- <input type="text" class="form-control" id="microscope" name="microscope"
                             placeholder="Image source" required> -->
                     </div>
                 </div>
-				<!-- Input field for adding a new microscope (hidden by default) -->
-				<div class="form-group row mb-3" id="new_microscope_div" style="display: none;">
-    				<label for="new_microscope" class="col-sm-3 col-form-label"><strong>New Microscope Name</strong></label>
-    				<div class="col-sm">
-        				<input type="text" class="form-control" id="new_microscope" name="new_microscope" placeholder="Enter new microscope name">
-    				</div>
-				</div>
-
-
+                <div class="form-group row mb-3" id="new_microscope_div" style="display: none;">
+                    <label for="microscope_name" class="col-sm-3 col-form-label"><strong>New Microscope
+                            Name</strong></label>
+                    <div class="col-sm">
+                        <input type="text" class="form-control" id="microscope_name" name="microscope_name"
+                            placeholder="Enter new microscope name">
+                    </div>
+                </div>
 
                 <div class="form-group row mb-3">
                     <label for="microscope" class="col-sm-3 col-form-label"><strong>Magnification</strong></label>
@@ -529,7 +452,7 @@
                 <div class="form-group row" id="upload-data">
                 </div>
 
-                <button type="submit" class="btn btn-primary" id="save-button">Add vessel</button>
+                <button type="submit" class="btn btn-primary" id="save-button">Add project</button>
                 <!-- <button type="button" class="btn btn-info" onclick="uploadButton()" disabled id="upload-button">Upload</button> -->
 
 
@@ -538,39 +461,32 @@
     </div>
 </div>
 
-
-
-            </main>
-        </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-        crossorigin="anonymous"></script>
-    
+{% endblock %}
+{% block scripts %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-    function getplatedata(ele){
+    function getplatedata(ele) {
         console.log(ele.value);
-        
-        if (ele.value==6){
-            document.getElementById("existing_grid").innerHTML=`<p class="fw-bold">Choose size:</p>`+html6;
+
+        if (ele.value == 6) {
+            document.getElementById("existing_grid").innerHTML = `<p class="fw-bold">Choose size:</p>` + html6;
         }
-        else if (ele.value==12){
-            document.getElementById("existing_grid").innerHTML=`<p class="fw-bold">Choose size:</p>`+html12;
+        else if (ele.value == 12) {
+            document.getElementById("existing_grid").innerHTML = `<p class="fw-bold">Choose size:</p>` + html12;
         }
-        else if (ele.value==24){
-            document.getElementById("existing_grid").innerHTML=`<p class="fw-bold">Choose size:</p>`+html24;
+        else if (ele.value == 24) {
+            document.getElementById("existing_grid").innerHTML = `<p class="fw-bold">Choose size:</p>` + html24;
         }
-        else if (ele.value==48){
-            document.getElementById("existing_grid").innerHTML=`<p class="fw-bold">Choose size:</p>`+html48;
+        else if (ele.value == 48) {
+            document.getElementById("existing_grid").innerHTML = `<p class="fw-bold">Choose size:</p>` + html48;
         }
-        else if(ele.value == 96){
-            document.getElementById("existing_grid").innerHTML=`<p class="fw-bold">Choose size:</p>`+html96;
+        else if (ele.value == 96) {
+            document.getElementById("existing_grid").innerHTML = `<p class="fw-bold">Choose size:</p>` + html96;
         }
-        else{
-            document.getElementById("existing_grid").innerHTML=`<p class="fw-bold">Choose size:</p>`+html12;
+        else {
+            document.getElementById("existing_grid").innerHTML = `<p class="fw-bold">Choose size:</p>` + html12;
         }
-        
+
     }
     let newhtml = `<fieldset class="form-group row">
                         <legend class="col-form-label col-sm-3 float-sm-left pt-0">
@@ -661,7 +577,9 @@
                         <div class="col-sm">
                             <select class="form-select" id="existing_plate_select" name="existing_plate_select" onchange="getplatedata(this)">
                                 <option selected>--</option>
-                                
+                                {% for p in plates %}
+                                <option value="{{p.id}}">{{p.plate_name}}</option>
+                                {%endfor%}
                             </select>
                         </div>
                     </div>
@@ -671,7 +589,7 @@
     document.querySelectorAll("input[name='plate_type']").forEach((input) => {
         input.addEventListener('change', show_plate_type);
     });
-    let html48=`<div class="col-xl-7" style="border: 1px solid #34a2ac; border-radius: 20px; padding:10px;">
+    let html48 = `<div class="col-xl-7" style="border: 1px solid #34a2ac; border-radius: 20px; padding:10px;">
         <div class="row">
             <div class="col d-flex justify-content-center plates p-0 "></div>
             
@@ -1060,7 +978,7 @@
         </div>
         
     </div>`
-    let html6=`<div class="col-xl-7" style="border: 1px solid #34a2ac; border-radius: 20px; padding:10px;">
+    let html6 = `<div class="col-xl-7" style="border: 1px solid #34a2ac; border-radius: 20px; padding:10px;">
         <div class="row">
             <div class="col d-flex justify-content-center plates p-0 "></div>
             
@@ -1137,26 +1055,26 @@
             <div class="col d-flex justify-content-center plates"><strong>A</strong></div>
             <div class="col d-flex justify-content-center plates">
                 <label class="location">
-                    <input type="radio" name="location" value="A1" />
-                    <div class="dot "></div>
+                    <input type="radio" name="location" value="A1" {% if "A1" in locations %}disabled{% endif %}/>
+                    <div class="dot {% if "A1" in locations %}disabled{% endif %}"></div>
                 </label>
             </div>
             <div class="col d-flex justify-content-center plates">
                 <label class="location">
-                    <input type="radio" name="location" value="A2" />
-                    <div class="dot "></div>
+                    <input type="radio" name="location" value="A2" {% if "A2" in locations %}disabled{% endif %}/>
+                    <div class="dot {% if "A2" in locations %}disabled{% endif %}"></div>
                 </label>
             </div>
             <div class="col d-flex justify-content-center plates">
                 <label class="location">
-                    <input type="radio" name="location" value="A3" />
-                    <div class="dot "></div>
+                    <input type="radio" name="location" value="A3" {% if "A3" in locations %}disabled{% endif %}/>
+                    <div class="dot {% if "A3" in locations %}disabled{% endif %}"></div>
                 </label>
             </div>
             <div class="col d-flex justify-content-center plates">
                 <label class="location">
-                    <input type="radio" name="location" value="A4" />
-                    <div class="dot "></div>
+                    <input type="radio" name="location" value="A4" {% if "A4" in locations %}disabled{% endif %}/>
+                    <div class="dot {% if "A4" in locations %}disabled{% endif %}"></div>
                 </label>
             </div>
         </div>
@@ -1164,26 +1082,26 @@
             <div class="col d-flex justify-content-center plates"><strong>B</strong></div>
             <div class="col d-flex justify-content-center plates">
                 <label class="location">
-                    <input type="radio" name="location" value="B1" />
-                    <div class="dot "></div>
+                    <input type="radio" name="location" value="B1" {% if "B1" in locations %}disabled{% endif %}/>
+                    <div class="dot {% if "B1" in locations %}disabled{% endif %}"></div>
                 </label>
             </div>
             <div class="col d-flex justify-content-center plates">
                 <label class="location">
-                    <input type="radio" name="location" value="B2" />
-                    <div class="dot "></div>
+                    <input type="radio" name="location" value="B2" {% if "B2" in locations %}disabled{% endif %}/>
+                    <div class="dot {% if "B2" in locations %}disabled{% endif %}"></div>
                 </label>
             </div>
             <div class="col d-flex justify-content-center plates">
                 <label class="location">
-                    <input type="radio" name="location" value="B3" />
-                    <div class="dot "></div>
+                    <input type="radio" name="location" value="B3" {% if "B3" in locations %}disabled{% endif %}/>
+                    <div class="dot {% if "B3" in locations %}disabled{% endif %}"></div>
                 </label>
             </div>
             <div class="col d-flex justify-content-center plates">
                 <label class="location">
-                    <input type="radio" name="location" value="B4" />
-                    <div class="dot "></div>
+                    <input type="radio" name="location" value="B4" {% if "B4" in locations %}disabled{% endif %}/>
+                    <div class="dot {% if "B4" in locations %}disabled{% endif %}"></div>
                 </label>
             </div>
         </div>
@@ -1191,26 +1109,26 @@
             <div class="col d-flex justify-content-center plates"><strong>C</strong></div>
             <div class="col d-flex justify-content-center plates">
                 <label class="location">
-                    <input type="radio" name="location" value="C1" />
-                    <div class="dot "></div>
+                    <input type="radio" name="location" value="C1" {% if "C1" in locations %}disabled{% endif %}/>
+                    <div class="dot {% if "C1" in locations %}disabled{% endif %}"></div>
                 </label>
             </div>
             <div class="col d-flex justify-content-center plates">
                 <label class="location">
-                    <input type="radio" name="location" value="C2" />
-                    <div class="dot "></div>
+                    <input type="radio" name="location" value="C2" {% if "C2" in locations %}disabled{% endif %}/>
+                    <div class="dot {% if "C2" in locations %}disabled{% endif %}"></div>
                 </label>
             </div>
             <div class="col d-flex justify-content-center plates">
                 <label class="location">
-                    <input type="radio" name="location" value="C3" />
-                    <div class="dot "></div>
+                    <input type="radio" name="location" value="C3" {% if "C3" in locations %}disabled{% endif %}/>
+                    <div class="dot {% if "C3" in locations %}disabled{% endif %}"></div>
                 </label>
             </div>
             <div class="col d-flex justify-content-center plates">
                 <label class="location">
-                    <input type="radio" name="location" value="C4" />
-                    <div class="dot "></div>
+                    <input type="radio" name="location" value="C4" {% if "C4" in locations %}disabled{% endif %}/>
+                    <div class="dot {% if "C4" in locations %}disabled{% endif %}"></div>
                 </label>
             </div>
         </div>
@@ -1230,38 +1148,38 @@
                                 <div class="col d-flex justify-content-center plates"><strong>A</strong></div>
                                 <div class="col d-flex justify-content-center plates">
                                     <label class="location">
-                                        <input type="radio" name="location" value="A1" />
-                                        <div class="dot "></div>
+                                        <input type="radio" name="location" value="A1" {% if 'A1' in locations24%}disabled{% endif %}/>
+                                        <div class="dot {% if 'A1' in locations24%}disabled{% endif %}"></div>
                                     </label>
                                 </div>
                                 <div class="col d-flex justify-content-center plates">
                                     <label class="location">
-                                        <input type="radio" name="location" value="A2" />
-                                        <div class="dot "></div>
+                                        <input type="radio" name="location" value="A2" {% if 'A2' in locations24%}disabled{% endif %}/>
+                                        <div class="dot {% if 'A2' in locations24%}disabled{% endif %}"></div>
                                     </label>
                                 </div>
                                 <div class="col d-flex justify-content-center plates">
                                     <label class="location">
-                                        <input type="radio" name="location" value="A3" />
-                                        <div class="dot "></div>
+                                        <input type="radio" name="location" value="A3" {% if 'A3' in locations24%}disabled{% endif %}/>
+                                        <div class="dot {% if 'A3' in locations24%}disabled{% endif %}"></div>
                                     </label>
                                 </div>
                                 <div class="col d-flex justify-content-center plates">
                                     <label class="location">
-                                        <input type="radio" name="location" value="A4" />
-                                        <div class="dot "></div>
+                                        <input type="radio" name="location" value="A4" {% if 'A4' in locations24%}disabled{% endif %}/>
+                                        <div class="dot {% if 'A4' in locations24%}disabled{% endif %}"></div>
                                     </label>
                                 </div>
                                 <div class="col d-flex justify-content-center plates">
                                     <label class="location">
-                                        <input type="radio" name="location" value="A5" />
-                                        <div class="dot "></div>
+                                        <input type="radio" name="location" value="A5" {% if 'A5' in locations24%}disabled{% endif %}/>
+                                        <div class="dot {% if 'A5' in locations24%}disabled{% endif %}"></div>
                                     </label>
                                 </div>
                                 <div class="col d-flex justify-content-center plates">
                                     <label class="location">
-                                        <input type="radio" name="location" value="A6" />
-                                        <div class="dot "></div>
+                                        <input type="radio" name="location" value="A6" {% if 'A6' in locations24%}disabled{% endif %}/>
+                                        <div class="dot {% if 'A6' in locations24%}disabled{% endif %}"></div>
                                     </label>
                                 </div>
                             </div>
@@ -1269,38 +1187,38 @@
                                 <div class="col d-flex justify-content-center plates"><strong>B</strong></div>
                                 <div class="col d-flex justify-content-center plates">
                                     <label class="location">
-                                        <input type="radio" name="location" value="B1" />
-                                        <div class="dot "></div>
+                                        <input type="radio" name="location" value="B1" {% if 'B1' in locations24%}disabled{% endif %}/>
+                                        <div class="dot {% if 'B1' in locations24%}disabled{% endif %}"></div>
                                     </label>
                                 </div>
                                 <div class="col d-flex justify-content-center plates">
                                     <label class="location">
-                                        <input type="radio" name="location" value="B2" />
-                                        <div class="dot "></div>
+                                        <input type="radio" name="location" value="B2" {% if 'B2' in locations24%}disabled{% endif %}/>
+                                        <div class="dot {% if 'B2' in locations24%}disabled{% endif %}"></div>
                                     </label>
                                 </div>
                                 <div class="col d-flex justify-content-center plates">
                                     <label class="location">
-                                        <input type="radio" name="location" value="B3" />
-                                        <div class="dot "></div>
+                                        <input type="radio" name="location" value="B3" {% if 'B3' in locations24%}disabled{% endif %}/>
+                                        <div class="dot {% if 'B3' in locations24%}disabled{% endif %}"></div>
                                     </label>
                                 </div>
                                 <div class="col d-flex justify-content-center plates">
                                     <label class="location">
-                                        <input type="radio" name="location" value="B4" />
-                                        <div class="dot "></div>
+                                        <input type="radio" name="location" value="B4" {% if 'B4' in locations24%}disabled{% endif %}/>
+                                        <div class="dot {% if 'B4' in locations24%}disabled{% endif %}"></div>
                                     </label>
                                 </div>
                                 <div class="col d-flex justify-content-center plates">
                                     <label class="location">
-                                        <input type="radio" name="location" value="B5" />
-                                        <div class="dot "></div>
+                                        <input type="radio" name="location" value="B5" {% if 'B5' in locations24%}disabled{% endif %}/>
+                                        <div class="dot {% if 'B5' in locations24%}disabled{% endif %}"></div>
                                     </label>
                                 </div>
                                 <div class="col d-flex justify-content-center plates">
                                     <label class="location">
-                                        <input type="radio" name="location" value="B6" />
-                                        <div class="dot "></div>
+                                        <input type="radio" name="location" value="B6" {% if 'B6' in locations24%}disabled{% endif %}/>
+                                        <div class="dot {% if 'B6' in locations24%}disabled{% endif %}"></div>
                                     </label>
                                 </div>
                             </div>
@@ -1308,38 +1226,38 @@
                                 <div class="col d-flex justify-content-center plates"><strong>C</strong></div>
                                 <div class="col d-flex justify-content-center plates">
                                     <label class="location">
-                                        <input type="radio" name="location" value="C1" />
-                                        <div class="dot "></div>
+                                        <input type="radio" name="location" value="C1" {% if 'C1' in locations24%}disabled{% endif %}/>
+                                        <div class="dot {% if 'C1' in locations24%}disabled{% endif %}"></div>
                                     </label>
                                 </div>
                                 <div class="col d-flex justify-content-center plates">
                                     <label class="location">
-                                        <input type="radio" name="location" value="C2" />
-                                        <div class="dot "></div>
+                                        <input type="radio" name="location" value="C2" {% if 'C2' in locations24%}disabled{% endif %}/>
+                                        <div class="dot {% if 'C2' in locations24%}disabled{% endif %}"></div>
                                     </label>
                                 </div>
                                 <div class="col d-flex justify-content-center plates">
                                     <label class="location">
-                                        <input type="radio" name="location" value="C3" />
-                                        <div class="dot "></div>
+                                        <input type="radio" name="location" value="C3" {% if 'C3' in locations24%}disabled{% endif %}/>
+                                        <div class="dot {% if 'C3' in locations24%}disabled{% endif %}"></div>
                                     </label>
                                 </div>
                                 <div class="col d-flex justify-content-center plates">
                                     <label class="location">
-                                        <input type="radio" name="location" value="C4" />
-                                        <div class="dot "></div>
+                                        <input type="radio" name="location" value="C4" {% if 'C4' in locations24%}disabled{% endif %}/>
+                                        <div class="dot {% if 'C4' in locations24%}disabled{% endif %}"></div>
                                     </label>
                                 </div>
                                 <div class="col d-flex justify-content-center plates">
                                     <label class="location">
-                                        <input type="radio" name="location" value="C5" />
-                                        <div class="dot "></div>
+                                        <input type="radio" name="location" value="C5" {% if 'C5' in locations24%}disabled{% endif %}/>
+                                        <div class="dot {% if 'C5' in locations24%}disabled{% endif %}"></div>
                                     </label>
                                 </div>
                                 <div class="col d-flex justify-content-center plates">
                                     <label class="location">
-                                        <input type="radio" name="location" value="C6" />
-                                        <div class="dot "></div>
+                                        <input type="radio" name="location" value="C6" {% if 'C6' in locations24%}disabled{% endif %}/>
+                                        <div class="dot {% if 'C6' in locations24%}disabled{% endif %}"></div>
                                     </label>
                                 </div>
                             </div>
@@ -1347,38 +1265,38 @@
                                 <div class="col d-flex justify-content-center plates"><strong>D</strong></div>
                                 <div class="col d-flex justify-content-center plates">
                                     <label class="location">
-                                        <input type="radio" name="location" value="D1" />
-                                        <div class="dot "></div>
+                                        <input type="radio" name="location" value="D1" {% if 'D1' in locations24%}disabled{% endif %}/>
+                                        <div class="dot {% if 'D1' in locations24%}disabled{% endif %}"></div>
                                     </label>
                                 </div>
                                 <div class="col d-flex justify-content-center plates">
                                     <label class="location">
-                                        <input type="radio" name="location" value="D2" />
-                                        <div class="dot "></div>
+                                        <input type="radio" name="location" value="D2" {% if 'D2' in locations24%}disabled{% endif %}/>
+                                        <div class="dot {% if 'D2' in locations24%}disabled{% endif %}"></div>
                                     </label>
                                 </div>
                                 <div class="col d-flex justify-content-center plates">
                                     <label class="location">
-                                        <input type="radio" name="location" value="D3" />
-                                        <div class="dot "></div>
+                                        <input type="radio" name="location" value="D3" {% if 'D3' in locations24%}disabled{% endif %}/>
+                                        <div class="dot {% if 'D3' in locations24%}disabled{% endif %}"></div>
                                     </label>
                                 </div>
                                 <div class="col d-flex justify-content-center plates">
                                     <label class="location">
-                                        <input type="radio" name="location" value="D4" />
-                                        <div class="dot "></div>
+                                        <input type="radio" name="location" value="D4" {% if 'D4' in locations24%}disabled{% endif %}/>
+                                        <div class="dot {% if 'D4' in locations24%}disabled{% endif %}"></div>
                                     </label>
                                 </div>
                                 <div class="col d-flex justify-content-center plates">
                                     <label class="location">
-                                        <input type="radio" name="location" value="D5" />
-                                        <div class="dot "></div>
+                                        <input type="radio" name="location" value="D5" {% if 'D5' in locations24%}disabled{% endif %}/>
+                                        <div class="dot {% if 'D5' in locations24%}disabled{% endif %}"></div>
                                     </label>
                                 </div>
                                 <div class="col d-flex justify-content-center plates">
                                     <label class="location">
-                                        <input type="radio" name="location" value="D6" />
-                                        <div class="dot "></div>
+                                        <input type="radio" name="location" value="D6" {% if 'D6' in locations24%}disabled{% endif %}/>
+                                        <div class="dot {% if 'D6' in locations24%}disabled{% endif %}"></div>
                                     </label>
                                 </div>
                             </div>
@@ -1507,18 +1425,46 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1-rc.1/js/select2.min.js"></script>
 <script>
     function formatState(state) {
-       if (!state.id) { return state.text; }
-       var $state = $(
-          '<span><img src="' + $(state.element).attr('data-src') + '" class="img-flag" /> ' + state.text + '</span>'
-       );
-       return $state;
+        if (!state.id) { return state.text; }
+        var $state = $(
+            '<span><img src="' + $(state.element).attr('data-src') + '" class="img-flag" /> ' + state.text + '</span>'
+        );
+        return $state;
     };
     $('#cell_line').select2({
-       minimumResultsForSearch: Infinity,
-       templateResult: formatState,
-       templateSelection: formatState
+        minimumResultsForSearch: Infinity,
+        templateResult: formatState,
+        templateSelection: formatState
     });
- </script>
+</script>
+//<script>
+    // Function to show/hide training form based on the selected cell line
+//    function toggleTrainingForm() {
+//        const cellLineSelect = document.getElementById('cell_line');
+//        const trainingForm = document.getElementById('training_form');
+//        const training_name_input = document.getElementById('training_dataset_name')
+//        const fileInput = document.getElementById('training_images')
+
+//        if (cellLineSelect.value === 'Generalist Model') {
+//            trainingForm.style.display = 'block';
+//            training_name_input.setAttribute('required', '');
+//            fileInput.setAttribute('required', '')
+//        } else {
+//            trainingForm.style.display = 'none';
+//            training_name_input.removeAttribute('required');
+//            fileInput.removeAttribute('required')
+//        }
+//    }
+
+    // Function to validate the number of uploaded images
+//    function validateImages() {
+//        const fileInput = document.getElementById('training_images');
+//        if (fileInput.files.length < 10) {
+//            alert("You need at least 10 images for training.");
+//            fileInput.value = ""; // Clear the file input
+//        }
+//    }
+//</script>
 <script>
     function toggleTrainingForm() {
         const cellLine = document.getElementById('cell_line').value;
@@ -1538,7 +1484,7 @@
     function toggleMicroscopeInput() {
         const microscopeSelect = document.getElementById('microscope');
         const newMicroscopeDiv = document.getElementById('new_microscope_div');
-        
+
         if (microscopeSelect.value === 'other') {
             newMicroscopeDiv.style.display = 'block';
         } else {
@@ -1548,7 +1494,4 @@
 </script>
 
 
-
-</body>
-
-</html>
+{% endblock %}
