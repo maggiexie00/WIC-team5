@@ -1,69 +1,99 @@
-{% extends 'base.html' %}
+{% extends 'control/base.html' %}
 {% load static %}
 
+{% block style %}
+<style>
+    .form-control {
+        border: 1px solid;
+        border-radius: 0.375rem;
+        padding: 5px;
+        border-color: #dadee3;
+    }
+
+    .form-text {
+        font-size: 0.875em;
+        color: #6c757d;
+    }
+
+    .btn-primary {
+        background-color: #c62828;
+        border-color: #c62828;
+    }
+
+    .btn-primary:hover {
+        background-color: #b71c1c;
+        border-color: #b71c1c;
+    }
+</style>
+{% endblock %}
+
 {% block main %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-8">
-            <div class="card p-4 shadow">
-                <h3 class="mb-4">Submit Training Data</h3>
+<div class="row p-2">
+    <div class="col">
+        <h3>Submit Training Data</h3>
+    </div>
+</div>
+{% for message in messages %}
+<div class="alert alert-success" role="alert">{{ message }}</div>
+{% endfor %}
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col-9 card p-5 shadow">
+            <h3 class="mb-5">Submit Training Data</h3>
+            <form method="post" enctype="multipart/form-data" onsubmit="return submitForm(event)" id="submitTrainingDataForm">
+                {% csrf_token %}
                 
-                {% if form.errors %}
-                <div class="alert alert-danger">
-                    <ul>
-                        {% for field in form %}
-                            {% for error in field.errors %}
-                                <li>{{ error }}</li>
-                            {% endfor %}
-                        {% endfor %}
-                        {% for error in form.non_field_errors %}
-                            <li>{{ error }}</li>
-                        {% endfor %}
-                    </ul>
+                <div class="form-group row mb-3">
+                    <label for="id_dataset_name" class="col-sm-3 col-form-label"><strong>Alpha Numeric</strong></label>
+                    <div class="col-sm">
+                        <input type="text" class="form-control" id="id_dataset_name" name="dataset_name" placeholder="Alpha Numeric" required>
+                    </div>
                 </div>
-                {% endif %}
+
+                <div class="form-group row mb-3">
+                    <label for="id_organ" class="col-sm-3 col-form-label"><strong>Organ</strong></label>
+                    <div class="col-sm">
+                        <input type="text" class="form-control" id="id_organ" name="organ" placeholder="Organ" required>
+                    </div>
+                </div>
+
+                <div class="form-group row mb-3">
+                    <label for="id_specie" class="col-sm-3 col-form-label"><strong>Specie</strong></label>
+                    <div class="col-sm">
+                        <input type="text" class="form-control" id="id_specie" name="specie" placeholder="Specie" required>
+                    </div>
+                </div>
+
+                <div class="form-group row mb-3">
+                    <label for="id_adherent_or_suspension" class="col-sm-3 col-form-label"><strong>Adherent or Suspension</strong></label>
+                    <div class="col-sm">
+                        <input type="text" class="form-control" id="id_adherent_or_suspension" name="adherent_or_suspension" placeholder="Adherent or Suspension" required>
+                    </div>
+                </div>
+
+                <div class="form-group row mb-3">
+                    <label for="id_training_images" class="col-sm-3 col-form-label"><strong>Choose File</strong></label>
+                    <div class="col-sm">
+                        <input type="file" class="form-control" id="id_training_images" name="training_images" multiple accept="image/*" required>
+                        <small class="form-text">Upload at least 10 training frames.</small>
+                    </div>
+                </div>
                 
-                <form method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
-                    {% csrf_token %}
-                    
-                    <div class="form-group mb-3">
-                        <label for="id_dataset_name"><strong>Alpha Numeric</strong></label>
-                        <input type="text" class="form-control" id="id_dataset_name" name="dataset_name" placeholder="Enter alpha numeric value">
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="id_organ"><strong>Organ</strong></label>
-                        <input type="text" class="form-control" id="id_organ" name="organ" placeholder="Enter organ">
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="id_specie"><strong>Specie</strong></label>
-                        <input type="text" class="form-control" id="id_specie" name="specie" placeholder="Enter specie">
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="id_adherent_or_suspension"><strong>Adherent or Suspension</strong></label>
-                        <input type="text" class="form-control" id="id_adherent_or_suspension" name="adherent_or_suspension" placeholder="Enter adherent or suspension">
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="id_training_images"><strong>Choose File</strong></label>
-                        <input type="file" class="form-control" id="id_training_images" name="training_images" multiple accept="image/*">
-                        <small class="form-text text-muted">Upload at least 10 training frames.</small>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-            </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
         </div>
     </div>
 </div>
 
 <script>
-    function validateForm() {
+    async function submitForm(event) {
+        event.preventDefault();
+
+        const form = document.getElementById('submitTrainingDataForm');
+        const formData = new FormData(form);
         const trainingImages = document.getElementById('id_training_images');
         const files = trainingImages.files;
-        
+
         if (files.length < 10) {
             alert("You need at least 10 images for training");
             return false;
@@ -76,7 +106,21 @@
             }
         }
 
-        return true;
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (response.ok) {
+                window.location.href = "{% url 'add_plate' %}";
+            } else {
+                alert("Failed to submit training data");
+            }
+        } catch (error) {
+            console.error("Error submitting form: ", error);
+            alert("An error occurred while submitting the form.");
+        }
     }
 </script>
 {% endblock %}
